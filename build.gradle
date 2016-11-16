@@ -1,0 +1,34 @@
+repositories {
+    mavenCentral()
+}
+
+def cdhVersion="5.1.4"
+def hadoopVersion="2.3.0"
+
+apply plugin: 'java'
+apply plugin: 'scala'
+configurations {
+    provided
+}
+dependencies {
+    compile 'org.scala-lang:scala-library:2.11.1'
+    compile 'au.com.bytecode:opencsv:2.4'
+    provided("org.apache.hadoop:hadoop-common:${hadoopVersion}-cdh${cdhVersion}") {
+        exclude group: 'org.apache.avro', module: 'avro'
+        exclude group: 'log4j'
+    }
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.0.RELEASE'
+
+    provided("org.apache.hadoop:hadoop-mapreduce-client-core:${hadoopVersion}-cdh${cdhVersion}") {
+        exclude group: 'org.jboss.netty', module: 'netty'
+        exclude group: 'org.apache.avro', module: 'avro'
+        exclude group: 'org.slf4j'
+        exclude group: 'log4j'
+    }
+
+
+    compile('org.apache.spark:spark-core_2.11:1.6.0') {
+        exclude module: 'javax.servlet'
+        exclude group: 'org.jboss.netty'
+    }
+}
